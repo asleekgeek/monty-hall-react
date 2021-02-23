@@ -1,19 +1,12 @@
-import logo from './logo.svg';
-import './App.css';
-import GameSimulationProgress from './GameSimulationProgress';
+import React, { useState, useEffect } from 'react';
+import GameSimulationTrigger from './components/GameSimulationTrigger';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-            Simulation Progress:
-            <GameSimulationProgress />
-        </p>
-      </header>
-    </div>
-  );
+const App = () => {
+    return (
+        <div>------------------------------------------------
+            <GameSimulationTrigger />
+        -----------------------------------------------------</div>
+    );
 }
 
 export default App;
