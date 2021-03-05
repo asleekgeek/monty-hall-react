@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import RestController from './RestController';
 
-export class GameSimulationProgress extends React.Component {
+export class GameSimulationProgress extends Component {
     constructor(props) {
 		super(props);
 		this.state = {
