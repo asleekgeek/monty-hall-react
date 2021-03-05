@@ -1,18 +1,26 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import RestController from './RestController'
 
 function GameSimulationTrigger() {
     const [number_sims, setNumberOfSims] = useState(0);
 
+    function handleNumberOfSimsChange(e) {
+        console.log(e.target.value);
+        setNumberOfSims(e.target.value)
+    }
+
+    useEffect(() => {
+        return (<RestController total_simulations={number_sims} />)
+    }, [number_sims])
+
     return (
-        <Fragment>
-            <RestController number_sims={number_sims} data={() => dispatch(setNumberOfSims(number_sims))} />;
-            <form type="submit" onSubmit={e => setNumberOfSims(e.target.value)}>
+        <div>
+            <form type="submit" onSubmit={handleNumberOfSimsChange}>
                 <label htmlFor="number_sims">Number of simulations</label>
-                <input type="input" id="nrsims" value={number_sims} onChange={e => setNumberOfSims(e.target.value)}/>
+                <input type="input" id="nrsims" value={number_sims} onChange={handleNumberOfSimsChange}/>
                 <button id="start_sim" type="submit">Start simulation</button>
             </form>
-            event.preventDefault();
-        </Fragment>
+        </div>
     );
 }
 

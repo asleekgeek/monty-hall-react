@@ -1,51 +1,32 @@
-import React, { useState } from 'react';
-import RestController from './RestController';
+import React, { useState, useEffect } from 'react';
 
-const dataFetchReducer = (state, action) => {
-    switch (action.type) {
-        case 'assign':
-            return { data: state.number_sims };
-        default:
-            throw new Error();
-    }
-}
-
-function GameSimulationProgress() {
-    const initialState = {number_sims: 0};;
-    const [state, dispatch] = useReducer(dataFetchReducer, {
-        isError: false,
-        number_sims: initialState
-    });
-
-    const [data, se] = useState([{"game_number": "", "player_switched": false, "player_won": false}]);
-    const [switched_players_pecentage,  percentageOfPlayersThatSwitched] = useState(0);
-    const [player_that_switched_win_percentage, percentageOfPlayersThatSwitchedAndWon] = useState(0);
-    const [sims_data, dispatch] = useReducer(gameSimulationProgressReducer);
+function GameSimulationProgress(data) {
+    const [game_number, setProcessedGames] = useState(0);
+    const [switched_players_pecentage,  setPercentageOfPlayersThatSwitched] = useState(0);
+    const [player_that_switched_win_percentage, setPercentageOfPlayersThatSwitchedAndWon] = useState(0);
 
     useEffect(() => {
-        () => { percentageOfPlayersThatSwitched() }
-        () => { percentageOfPlayersThatSwitchedAndWon() }
+        const data_process = () => {
+            setProcessedGames(data.game_number);
 
-        console.log("Game number: " + data["G"]),
-        console.log(this.percentageOfPlayersThatSwitched),
-        console.log(this.percentageOfPlayersThatSwitchedAndWon)
+            const switched = data.filter(pw => { return  pw.player_switched === true; });
+            setPercentageOfPlayersThatSwitched((switched.reduce((a, b) => a + b, 0) * 100) / game_number);
+
+            const switched_and_won = data.filter(pw => { return  pw.player_switched === true && pw.player_won === true});
+            setPercentageOfPlayersThatSwitchedAndWon(((switched_and_won.reduce((a, b) => a + b, 0)) * 100) / game_number);
+        }
+
+        data_process();
+
+        return (
+            <div>
+                <h3>Games simulatioins prodessed so far</h3>
+                <ul>{data.map(data.number_sims)}</ul>
+                <ul><h3>Players that switched :</h3> {switched_players_pecentage}</ul>
+                <ul><h3>Players that switched and won /percentage/ :</h3> {player_that_switched_win_percentage}</ul>
+            </div>
+        );
     });
-
-    percentageOfPlayersThatSwitched(() => {
-        switched = data.filter(pw => { return  pw.player_switched === true; });
-        switched_players_pecentage = (switched.reduce((a, b) => a + b, 0) * 100) / this.state.game_number;
-    });
-
-    percentageOfPlayersThatSwitchedAndWon(() => {
-        switched_and_won = data.filter(pw => { return  pw.player_switched === true && pw.player_won === true});
-        player_that_switched_win_percentage = ((switched_and_won.reduce((a, b) => a + b, 0)) * 100) / this.state.game_number;
-    });
-
-    return (
-        <div>
-            <ui>data["game_number"]</ui>
-        </div>
-    );
 }
 
 export default GameSimulationProgress;

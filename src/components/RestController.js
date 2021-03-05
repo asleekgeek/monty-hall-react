@@ -1,27 +1,37 @@
-import React, {useEffect, useState} from 'react';
-import axios from 'axios';
+import React, {useEffect, useState } from 'react';
+import GameSimulationProgress from './GameSimulationProgress'
 
-function RestController(number_sims) {
-    const requestOptions = {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-    };
-    const [data, setData] = useState();
-    const dispatch = useContext(GameSimulationProgressDispatch);
+function RestController(total_smulations) {
+    const [pre_calc_simulations, setSimulations] = useState([])
 
-    useEffect(() => {
-        function fetchSimulationData() {
-            // Simple GET request with a JSON body using fetch
-            const result = fetch(`https://localhost:3000/monty_hall_simulations/${number_sims}`, requestOptions)
-                .then((json) => response.json());
-            setData(result.data);
-            dispatch(type = "assign");
-        }},
+    const getSimulations = () => {
+        try {
+            const simulations = () => {
+                fetch(`https://localhost:3000/monty_hall_simulations/${total_smulations}`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                .then(setSimulations(simulations.data))
+            }
+            console.log(simulations.data);
+        } catch (err) {
+            console.error(err.message);
+        };
+    }
 
-        fetchSimulationData()
-    )([number_sims]);
+    useEffect(()=> {
+        getSimulations()
 
-	return (<div>{data}</div>);
+        const interval=setInterval(()=>{
+            getSimulations()
+        },100)
+
+        return()=>clearInterval(interval)
+    })([])
+
+     return (
+        <div><GameSimulationProgress data={pre_calc_simulations} ></GameSimulationProgress></div>
+    )
 }
 
 export default RestController;
